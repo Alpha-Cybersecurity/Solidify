@@ -1,5 +1,25 @@
 # getInTransfers
 
 ```python
-[{'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P', 'amount': 1000000000000, 'confirmations': 2127, 'double_spend_seen': False, 'fee': 1948320000, 'height': 270868, 'note': '', 'payment_id': '0000000000000000', 'subaddr_index': {'major': 0, 'minor': 0}, 'suggested_confirmations_threshold': 1, 'timestamp': 1550490781, 'txid': 'e4e93962c6a907093a66a2fcbab9cc78c4cf2d47da7bb782021f0df68538f715', 'type': 'in', 'unlock_time': 0}, {'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P', 'amount': 1000000000000, 'confirmations': 2121, 'double_spend_seen': False, 'fee': 1350330000, 'height': 270874, 'note': '', 'payment_id': '0000000000000000', 'subaddr_index': {'major': 0, 'minor': 0}, 'suggested_confirmations_threshold': 1, 'timestamp': 1550491286, 'txid': 'e58ca40a8493dbbfcd7dbe8d45c9572d023d3a20d4e6df0a500a227b69126fba', 'type': 'in', 'unlock_time': 0}, {'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P', 'amount': 1454473506796558, 'confirmations': 2127, 'double_spend_seen': False, 'fee': 7547280000, 'height': 270868, 'note': '', 'payment_id': '16226168cd5e0ac90249c763cd6102fa154af96e93708b8d6faa1e0664c12407', 'subaddr_index': {'major': 0, 'minor': 0}, 'suggested_confirmations_threshold': 68, 'timestamp': 1550490781, 'txid': '9e0d317921b6ac86799911d482d5a0782c2e61bf5c4e65e049eedb738aad3bbf', 'type': 'in', 'unlock_time': 0}]
+[
+  {
+    'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P',
+    'amount': 1000000000000,
+    'confirmations': 2127,
+    'double_spend_seen': False,
+    'fee': 1948320000,
+    'height': 270868,
+    'note': '',
+    'payment_id': '0000000000000000',
+    'subaddr_index': {
+      'major': 0,
+      'minor': 0
+    },
+    'suggested_confirmations_threshold': 1,
+    'timestamp': 1550490781,
+    'txid': 'e4e93962c6a907093a66a2fcbab9cc78c4cf2d47da7bb782021f0df68538f715',
+    'type': 'in',
+    'unlock_time': 0
+  }
+]
 ```

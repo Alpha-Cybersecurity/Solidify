@@ -1,5 +1,31 @@
 # getOutTransfers
 
 ```python
-[{'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P', 'amount': 100000000000, 'confirmations': 2111, 'destinations': [{'address': '58nLozny7pKMVNU1t9YuvtehJsgmesDRjgS3NQvZuh83C6XsGxRiFYsSaTQtY2HYUkNcZ8QFURKpDRGrmHMvx6GN5ySbbcx', 'amount': 100000000000}], 'double_spend_seen': False, 'fee': 270210000, 'height': 270884, 'note': 'jejeje', 'payment_id': '0000000000000000', 'subaddr_index': {'major': 0, 'minor': 0}, 'suggested_confirmations_threshold': 1, 'timestamp': 1550492419, 'txid': '67ad8b2fa5a42a38b8bf9db754601a8f4499b429808f1eda60436702f5054d77', 'type': 'out', 'unlock_time': 0}, {'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P', 'amount': 0, 'confirmations': 2111, 'destinations': [{'address': '793yXJbZ95Ni93odWSGcBZJUFTAh8kMAAXGUqBXarneCDC2vYQLV9jXX9Cq4iFCuNvUttJN82Z4ywTDq799eTRoHF8A36xt', 'amount': 1000000000000}], 'double_spend_seen': False, 'fee': 269920000, 'height': 270884, 'note': '', 'payment_id': '0000000000000000', 'subaddr_index': {'major': 0, 'minor': 0}, 'suggested_confirmations_threshold': 0, 'timestamp': 1550492419, 'txid': 'a1e139e6f43358c9b38abf3c773ca11057f2908bbc687d346427af36878b0385', 'type': 'out', 'unlock_time': 0}, {'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P', 'amount': 100000000000, 'confirmations': 2111, 'destinations': [{'address': '74feqgjHPpSPoWfv7BMA6KFh2yyYvsvvQ2bF3P6u7JdnKRFXfiPDHaB7RZ841oTRKwg2p8mXhsABC4BFhHH286sMFawf3zL', 'amount': 100000000000}], 'double_spend_seen': False, 'fee': 269920000, 'height': 270884, 'note': 'jajaja\n', 'payment_id': '0000000000000000', 'subaddr_index': {'major': 0, 'minor': 0}, 'suggested_confirmations_threshold': 1, 'timestamp': 1550492419, 'txid': 'bab544d565b07924bdc693d7ed3caa155bd0405c0ad23a7196894d5292173a82', 'type': 'out', 'unlock_time': 0}]
+[
+  {
+    'address': '54FBcDuW4HHGRkdmTd4nZuUWRcDQrhhWVUEo3ERU6sTG5wwpU7CEcsdRHFkrx2RKyeLxk3eN5rbCujcSKJBwcZJw558648P',
+    'amount': 100000000000,
+    'confirmations': 2111,
+    'double_spend_seen': False,
+    'fee': 270210000,
+    'height': 270884,
+    'note': 'jejeje',
+    'payment_id': '0000000000000000',
+    'subaddr_index': {
+      'major': 0,
+      'minor': 0
+    },
+    'suggested_confirmations_threshold': 1,
+    'timestamp': 1550492419,
+    'txid': '67ad8b2fa5a42a38b8bf9db754601a8f4499b429808f1eda60436702f5054d77',
+    'type': 'out',
+    'unlock_time': 0,
+    'destinations': [
+      {
+        'address': '58nLozny7pKMVNU1t9YuvtehJsgmesDRjgS3NQvZuh83C6XsGxRiFYsSaTQtY2HYUkNcZ8QFURKpDRGrmHMvx6GN5ySbbcx',
+        'amount': 100000000000
+      }
+    ]
+  }
+]
 ```
