@@ -38,7 +38,6 @@ class MoneroRPC:
         signal.signal(signal.SIGSEGV, self.end)
         signal.signal(signal.SIGFPE, self.end)
         signal.signal(signal.SIGABRT, self.end)
-        signal.signal(signal.SIGBUS, self.end)
         signal.signal(signal.SIGILL, self.end)
 
     def end(self, signum, *args):
@@ -64,7 +63,7 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json()['result']
+        return response.json().get('result')
 
     def getBalance(self):
 
@@ -76,7 +75,19 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json()['result']
+        return response.json().get('result')
+
+    def getAccountsTags(self):
+
+        headers = {
+        'Content-Type': 'application/json',
+        }
+
+        data = '{"jsonrpc":"2.0","id":"0","method":"get_accounts"}'
+
+        response = requests.post(self.json_rpc_address, headers=headers, data=data)
+
+        return response.json().get('result')
 
     def getHeight(self):
 
@@ -88,7 +99,24 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json()['result']
+        return response.json().get('result')
+
+    def heightToDate(self, height):
+        r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
+
+        return r.json().get('block_header').get('timestamp')
+
+    def getAddressBook(self):
+
+        headers = {
+        'Content-Type': 'application/json',
+        }
+
+        data = '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{}}' 
+
+        response = requests.post(self.json_rpc_address, headers=headers, data=data)
+
+        return response.json().get('result').get('entries')
 
     def getOutTransfers(self):
 
@@ -100,7 +128,7 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json()['result']['out']
+        return response.json().get('result').get('out')
 
     def getInTransfers(self):
 
@@ -112,7 +140,7 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json()['result']['in']
+        return response.json().get('result').get('in')
 
 
 
@@ -124,4 +152,4 @@ class MoneroRPC:
 #
 moneroRPC = MoneroRPC('C:\\Users\\carlos\\Documents\\Monero\\wallets\\carlos-stagenet\\carlos-stagenet')
 
-print(moneroRPC.getHeight())
+print(moneroRPC.getAddressBook())
