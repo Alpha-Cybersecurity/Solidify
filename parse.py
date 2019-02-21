@@ -1,6 +1,9 @@
+from entities import Address, Balance, Transfer, Destination
+
 def parse(mrpc):
 
     print("[*] Addresses")
+
     addresses = []
     for a in mrpc.getAddress()['addresses']:
         address = Address(a.get('address'), a.get('label'), a.get('used'))
@@ -8,6 +11,7 @@ def parse(mrpc):
         addresses.append(address)
 
     print("[*] Balances")
+
     balances = []
     for b in mrpc.getBalance()['per_subaddress']:
         balance = Balance(b.get('address'), b.get('balance'), b.get('unlocked_balance'), b.get('num_unspent_outputs'))
@@ -17,6 +21,7 @@ def parse(mrpc):
     height = mrpc.getHeight().get('height')
 
     print("[*] Out Transfers")
+
     out_transfers = []
     for t in mrpc.getOutTransfers():
         transfer = Transfer(
@@ -40,6 +45,7 @@ def parse(mrpc):
         out_transfers.append(transfer)
 
     print("[*] In Transfers")
+
     in_transfers = []
     for t in mrpc.getInTransfers():
         transfer = Transfer(

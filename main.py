@@ -1,13 +1,12 @@
 from moneroRpcClass import MoneroRPC
 import argparse
 import random
-from entities import Address, Balance, Transfer, Destination
 from parse import parse
 
 def main(host, port, wallet_file, exe):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
     parse(mrpc)
-    
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Solidify')
