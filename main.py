@@ -18,9 +18,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-
-
-
     if not args.x:
         if not args.host:
             print("You must specify host if there is not a running instance")
