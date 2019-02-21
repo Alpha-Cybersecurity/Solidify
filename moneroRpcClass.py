@@ -2,6 +2,7 @@ import requests
 import random
 import subprocess
 import time
+import signal
 
 class MoneroRPC:
 
@@ -27,10 +28,21 @@ class MoneroRPC:
         # TODO Ver output
         print(" ".join(command))
         self._p = subprocess.Popen(" ".join(command))
+        self.start_close_handler()
+
         time.sleep(5)
 
-    # TODO Implementar bien salida
-    def __exit__(self):
+
+    def start_close_handler(self):
+        signal.signal(signal.SIGINT, self.end)
+        signal.signal(signal.SIGSEGV, self.end)
+        signal.signal(signal.SIGFPE, self.end)
+        signal.signal(signal.SIGABRT, self.end)
+        signal.signal(signal.SIGBUS, self.end)
+        signal.signal(signal.SIGILL, self.end)
+
+    def end(self, signum, *args):
+        print('Signal handler called with signal %s' % signum)
         self._p.terminate()
 
     @property
@@ -59,8 +71,8 @@ class MoneroRPC:
         headers = {
         'Content-Type': 'application/json',
         }
-        
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_balance","params":{"account_index":0,"address_indices":[0,1]}}' 
+
+        data = '{"jsonrpc":"2.0","id":"0","method":"get_balance","params":{"account_index":0,"address_indices":[0,1]}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
