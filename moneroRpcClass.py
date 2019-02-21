@@ -58,7 +58,7 @@ class MoneroRPC:
     def json_rpc_address(self):
         return "%s/json_rpc" % self.proxy_address
 
-    def getAddress(self):
+    def getAddresses(self):
 
         headers = {
             'Content-Type': 'application/json',

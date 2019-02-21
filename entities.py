@@ -1,7 +1,13 @@
 class Wallet():
 
-    def __init__(self, height):
-        self.height = height
+    def __init__(self, mrpc):
+        self.height = mrpc.getHeight()
+
+        self.addresses = mrpc.getAddresses()
+        self.balances = mrpc.getBalances()
+        self.out_transfers = mrpc.getOutTransfers()
+        self.in_transfers = mrpc.getInTransfers()
+
 
 class Address():
 

@@ -2,8 +2,8 @@ from entities import Wallet, Address, Balance, Transfer, Destination
 
 def parse(mrpc):
 
-    height = mrpc.getHeight()
-    w = Wallet(height)
-
+    w = Wallet(mrpc)
+    return w
+    # print(mrpc.heightToDate(height))
     # print(mrpc.getAccountsTags())
-    print(mrpc.getAddressBook())
+    # print(mrpc.getAddressBook())

@@ -10,12 +10,12 @@ class Graph():
     def write_result(self, file):
         nx.write_graphml(self.graph, file)
 
-def generate(mrpc):
+def generate(w):
 
     g = Graph()
 
-    adresses = mrpc.getAddress().get('addresses')
-    balances = mrpc.getBalance().get('per_subaddress')
+    adresses = w.addresses
+    balances = w.balances
 
     for a in adresses:
         if a.get('address_index') == 0:
@@ -24,6 +24,7 @@ def generate(mrpc):
         else:
             height = 0
             height_timestamp = 0
+
         for b in balances:
             if a.get('address') == b.get('address'):
                 balance = b.get('balance')

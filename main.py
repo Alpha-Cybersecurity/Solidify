@@ -3,10 +3,12 @@ import networkx as nx
 import argparse
 import random
 from parse import parse
+from draw import generate_draw
 
 def main(host, port, wallet_file, exe):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
-    parse(mrpc)
+    w = wallet(mrpc)
+    generate_draw(w)
 
 if __name__ == '__main__':
 
