@@ -1,13 +1,16 @@
 from moneroRpcClass import MoneroRPC
-import networkx as nx
 import argparse
 import random
-from parse import parse
 from draw import generate_draw
+
+from entities import Wallet
+
+import logging
+log = logging.getLogger(__name__)
 
 def main(host, port, wallet_file, exe):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
-    w = wallet(mrpc)
+    w = Wallet(mrpc)
     generate_draw(w)
 
 if __name__ == '__main__':
@@ -22,17 +25,17 @@ if __name__ == '__main__':
 
     if not args.x:
         if not args.host:
-            print("You must specify host if there is not a running instance")
+            log.error("You must specify host if there is not a running instance")
             exit(-1)
         if args.wallet_file:
-            print("Mustn't specify wallet file if not launching new RPC instance")
+            log.error("Mustn't specify wallet file if not launching new RPC instance")
             exit(-1)
         exe = None
         wallet_file = None
     else:
 
         if not args.wallet_file:
-            print("Must specify wallet file")
+            log.error("Must specify wallet file")
             exit(-1)
 
         exe = args.x # "C:\\Users\\carlos\\Desktop\\monero-gui-v0.13.0.4\\monero-wallet-rpc.exe"
@@ -40,10 +43,10 @@ if __name__ == '__main__':
 
     if args.host:
         if not args.port:
-            print("If you specify host, you must specity port")
+            log.error("If you specify host, you must specity port")
             exit(-1)
         if args.x:
-            print("You mustn't specify host if you want a new RPC instance")
+            log.error("You mustn't specify host if you want a new RPC instance")
             exit(-1)
 
     host = args.host if args.host else "127.0.0.1"

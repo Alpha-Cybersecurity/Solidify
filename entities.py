@@ -1,23 +1,25 @@
 class Wallet():
 
     def __init__(self, mrpc):
+
         self.height = mrpc.getHeight()
+        self.creation = mrpc.heightToDate(self.height)
 
         self.addresses = mrpc.getAddresses()
         self.balances = mrpc.getBalances()
         self.out_transfers = mrpc.getOutTransfers()
         self.in_transfers = mrpc.getInTransfers()
 
+        # print(mrpc.getAccountsTags())
+        # print(mrpc.getAddressBook())
 
 class Address():
 
-    def __init__(self, address, label, used):
+    def __init__(self, address, index, label, used):
         self.address = address
+        self.index = index
         self.label = label
         self.used = used
-
-    def __str__(self):
-        return "Address %s (%s)" % (self.address, self.label)
 
 class Balance():
 
@@ -27,8 +29,6 @@ class Balance():
         self.unlocked = unlocked
         self.num_unspent_outputs = num_unspent_outputs
 
-    def __str__(self):
-        return "Balance (%s): %d" % (self.address, self.balance)
 
 class Transfer():
     def __init__(self, address, amount, confirmations, double_spend_seen, fee, height, note, payment_id, timestamp, txid, type, destinations=[]):
@@ -53,15 +53,6 @@ class Transfer():
 
         self.destinations.append(destination)
 
-    def __str__(self):
-        if self.type == 'out':
-            res = "%s =[%d]=>" % (self.address[:10], self.amount)
-            for destination in self.destinations:
-                res += "\n" + (" " * len(self.address[:10])) + " -(%d)-> %s\n" % (destination.amount, destination.address)
-        else:
-            res = "-(%d)-> %s" % (self.amount, self.address)
-
-        return res
 
 class Destination():
     def __init__(self, address, amount):

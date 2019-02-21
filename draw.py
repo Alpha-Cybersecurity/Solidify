@@ -1,3 +1,4 @@
+import networkx as nx
 
 class Graph():
 
@@ -10,7 +11,7 @@ class Graph():
     def write_result(self, file):
         nx.write_graphml(self.graph, file)
 
-def generate(w):
+def generate_draw(w):
 
     g = Graph()
 
@@ -18,17 +19,17 @@ def generate(w):
     balances = w.balances
 
     for a in adresses:
-        if a.get('address_index') == 0:
-            height = mrpc.getHeight()
-            height_timestamp = mrpc.heightToDate(height)
+        if a.index == 0:
+            height = w.height
+            height_timestamp = w.creation
         else:
             height = 0
             height_timestamp = 0
 
         for b in balances:
-            if a.get('address') == b.get('address'):
-                balance = b.get('balance')
-                unlocked_balance = b.get('unlocked_balance')
-            g.addMoneroAddress(a.get('address'), balance, unlocked_balance, height, height_timestamp, a.get('label'), a.get('used'))
+            if a.address == b.address:
+                balance = b.balance
+                unlocked_balance = b.unlocked
+            g.addMoneroAddress(a.address, balance, unlocked_balance, height, height_timestamp, a.label, a.used)
 
     g.write_result("monero.graphml")

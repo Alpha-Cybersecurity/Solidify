@@ -27,11 +27,10 @@ class MoneroRPC:
                 daemon_host = '--daemon-host monero-stagenet.exan.tech:38081',
                 wallet_dit = '--wallet-file "%s"' % wallet_file # C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet
             )
-            print(options)
+
             command += ["%s" % v for v in options.values()]
 
             # TODO Ver output
-            print(" ".join(command))
             self._p = subprocess.Popen(" ".join(command))
             self.start_close_handler()
 
@@ -71,7 +70,7 @@ class MoneroRPC:
 
         addresses = []
         for a in r_data['addresses']:
-            address = Address(a.get('address'), a.get('label'), a.get('used'))
+            address = Address(a.get('address'), a.get('address_index'), a.get('label'), a.get('used'))
             addresses.append(address)
 
         return addresses
@@ -90,7 +89,6 @@ class MoneroRPC:
         balances = []
         for b in r_data['per_subaddress']:
             balance = Balance(b.get('address'), b.get('balance'), b.get('unlocked_balance'), b.get('num_unspent_outputs'))
-            print(balance)
             balances.append(balance)
 
         return balances
@@ -201,7 +199,7 @@ class MoneroRPC:
                 t.get('txid'),
                 t.get('type')
             )
-            print(transfer)
+
             in_transfers.append(transfer)
 
         return in_transfers
