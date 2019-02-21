@@ -8,29 +8,33 @@ class MoneroRPC:
 
     #monero-wallet-rpc.exe --stagenet --password "" --rpc-bind-port 28088 --disable-rpc-login  --daemon-host monero-stagenet.exan.tech:38081  --wallet-file C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet\carlos-stagenet#init method and start monero-wallet-rpc
 
-    def __init__(self, wallet_file):
+    def __init__(self, host, port, wallet_file=None, exe=None):
 
-        self._proxy_host = "127.0.0.1"
-        self._proxy_port = random.randint(10240, 65000) # Puerto aleatorio para poder lanzar varios
+        self._proxy_host = host
+        self._proxy_port = port # Puerto aleatorio para poder lanzar varios
 
-        command = ["C:\\Users\\carlos\\Desktop\\monero-gui-v0.13.0.4\\monero-wallet-rpc.exe"]
-        options = dict(
-            disable_login = '--disable-rpc-login',
-            net = '--stagenet',
-            password = '--password ""',
-            rpc_port = '--rpc-bind-port %d' % (self._proxy_port),
-            daemon_host = '--daemon-host monero-stagenet.exan.tech:38081',
-            wallet_dit = '--wallet-file "%s"' % wallet_file # C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet
-        )
+        if exe:
+            if not wallet_file:
+                raise Exception("No wallet file specified")
+                
+            command = [exe]
+            options = dict(
+                disable_login = '--disable-rpc-login',
+                net = '--stagenet',
+                password = '--password ""',
+                rpc_port = '--rpc-bind-port %d' % (self._proxy_port),
+                daemon_host = '--daemon-host monero-stagenet.exan.tech:38081',
+                wallet_dit = '--wallet-file "%s"' % wallet_file # C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet
+            )
+            print(options)
+            command += ["%s" % v for v in options.values()]
 
-        command += ["%s" % v for v in options.values()]
+            # TODO Ver output
+            print(" ".join(command))
+            self._p = subprocess.Popen(" ".join(command))
+            self.start_close_handler()
 
-        # TODO Ver output
-        print(" ".join(command))
-        self._p = subprocess.Popen(" ".join(command))
-        self.start_close_handler()
-
-        time.sleep(5)
+            time.sleep(5)
 
 
     def start_close_handler(self):
@@ -84,7 +88,7 @@ class MoneroRPC:
         'Content-Type': 'application/json',
         }
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_height"}' 
+        data = '{"jsonrpc":"2.0","id":"0","method":"get_height"}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
@@ -120,8 +124,8 @@ class MoneroRPC:
 
 
 
-
 #
-moneroRPC = MoneroRPC('C:\\Users\\carlos\\Documents\\Monero\\wallets\\carlos-stagenet\\carlos-stagenet')
-
-print(moneroRPC.getHeight())
+# #
+# moneroRPC = MoneroRPC('C:\\Users\\carlos\\Documents\\Monero\\wallets\\carlos-stagenet\\carlos-stagenet')
+#
+# print(moneroRPC.getHeight())
