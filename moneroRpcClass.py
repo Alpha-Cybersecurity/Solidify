@@ -64,7 +64,19 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json()
+        return response.json()['result']
+
+    def getHeight(self):
+
+        headers = {
+        'Content-Type': 'application/json',
+        }
+
+        data = '{"jsonrpc":"2.0","id":"0","method":"get_height"}' 
+
+        response = requests.post(self.json_rpc_address, headers=headers, data=data)
+
+        return response.json()['result']
 
     def getOutTransfers(self):
 
@@ -100,4 +112,4 @@ class MoneroRPC:
 #
 moneroRPC = MoneroRPC('C:\\Users\\carlos\\Documents\\Monero\\wallets\\carlos-stagenet\\carlos-stagenet')
 
-print(moneroRPC.getBalance())
+print(moneroRPC.getHeight())
