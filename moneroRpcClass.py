@@ -1,5 +1,6 @@
 import requests
 import random
+import subprocess
 
 class MoneroRPC:
 
@@ -23,6 +24,13 @@ class MoneroRPC:
         )
 
         command += ["%s" % v for v in options.values()]
+
+        # TODO Ver output
+        self._p = subprocess.Popen(command)
+
+    # TODO Implementar bien salida
+    def __exit__(self):
+        self._p.terminate()
 
     @property
     def proxy_address(self):
