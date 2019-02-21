@@ -103,9 +103,10 @@ class MoneroRPC:
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
-        return response.json().get('result')
+        return response.json().get('result').get('height')
 
     def heightToDate(self, height):
+        
         r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
 
         return r.json().get('block_header').get('timestamp')

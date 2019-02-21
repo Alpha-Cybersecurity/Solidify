@@ -1,12 +1,36 @@
 from moneroRpcClass import MoneroRPC
+import networkx as nx
 import argparse
 import random
 
 
+def addMoneroAddress(graph, address, balance, unlocked_balance, height, height_timestamp, label, used):
+    graph.add_node(address, balance=balance, height=height, height_timestamp=height_timestamp, label=label, used=used)
+    return graph
+
 def main(host, port, wallet_file, exe):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
-    print(mrpc.getAddress())
-    print(mrpc.getBalance())
+
+    G = nx.DiGraph()
+
+    adresses = mrpc.getAddress().get('addresses')
+    balances = mrpc.getBalance().get('per_subaddress')
+
+    for a in adresses:
+        if a.get('address_index') == 0:
+            height = mrpc.getHeight()
+            height_timestamp = mrpc.heightToDate(height)
+        else:
+            height = 0
+            height_timestamp = 0
+        for b in balances:
+            if a.get('address') == b.get('address'):
+                balance = b.get('balance')
+                unlocked_balance = b.get('unlocked_balance')
+            G = addMoneroAddress(G, a.get('address'), balance, unlocked_balance, height, height_timestamp, a.get('label'), a.get('used'))
+
+    nx.write_graphml(G, "monero.graphml")
+
     print(mrpc.getHeight())
     print(mrpc.getOutTransfers())
     print(mrpc.getInTransfers())
@@ -20,9 +44,6 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--client-port', dest='port', type=int, help='Running RPC client port')
 
     args = parser.parse_args()
-
-
-
 
     if not args.x:
         if not args.host:
