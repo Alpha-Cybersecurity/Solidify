@@ -3,6 +3,7 @@ import random
 import subprocess
 import time
 import signal
+from entities import Wallet, Address, Balance, Transfer, Destination
 
 class MoneroRPC:
 
@@ -60,67 +61,84 @@ class MoneroRPC:
     def getAddress(self):
 
         headers = {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         }
 
         data = '{"jsonrpc":"2.0","id":"0","method":"get_address","params":{"account_index":0}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        r_data = response.json().get('result')
 
-        return response.json().get('result')
+        addresses = []
+        for a in r_data['addresses']:
+            address = Address(a.get('address'), a.get('label'), a.get('used'))
+            addresses.append(address)
 
-    def getBalance(self):
+        return addresses
+
+    def getBalances(self):
 
         headers = {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         }
 
         data = '{"jsonrpc":"2.0","id":"0","method":"get_balance","params":{"account_index":0,"address_indices":[0,1]}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        r_data = response.json().get('result')
 
-        return response.json().get('result')
+        balances = []
+        for b in r_data['per_subaddress']:
+            balance = Balance(b.get('address'), b.get('balance'), b.get('unlocked_balance'), b.get('num_unspent_outputs'))
+            print(balance)
+            balances.append(balance)
+
+        return balances
 
     def getAccountsTags(self):
 
         headers = {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         }
 
         data = '{"jsonrpc":"2.0","id":"0","method":"get_accounts"}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
+        # TODO Parse result
         return response.json().get('result')
 
     def getHeight(self):
 
         headers = {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         }
 
         data = '{"jsonrpc":"2.0","id":"0","method":"get_height"}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        r_data = response.json().get('result')
 
-        return response.json().get('result').get('height')
+        return r_data.get('height')
 
     def heightToDate(self, height):
-        
-        r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
 
-        return r.json().get('block_header').get('timestamp')
+        r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
+        r_data = r.json().get('block_header')
+
+        return r_data.get('timestamp')
 
     def getAddressBook(self):
 
         headers = {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         }
 
         data = '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
+        # TODO Parse result
         return response.json().get('result').get('entries')
 
     def getOutTransfers(self):
@@ -132,8 +150,30 @@ class MoneroRPC:
         data = '{"jsonrpc":"2.0","id":"0","method":"get_transfers","params":{"out":true}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        r_data = response.json().get('result')
 
-        return response.json().get('result').get('out')
+        out_transfers = []
+        for t in r_data.get('out'):
+            transfer = Transfer(
+                t.get('address'),
+                t.get('amount'),
+                t.get('confirmations'),
+                t.get('double_spend_seen'),
+                t.get('fee'),
+                t.get('height'),
+                t.get('note'),
+                t.get('payment_id'),
+                t.get('timestamp'),
+                t.get('txid'),
+                t.get('type')
+            )
+            for d in t.get('destinations'):
+                destination = Destination(d.get('address'), d.get('amount'))
+                transfer.add_destination(destination)
+
+            out_transfers.append(transfer)
+
+        return out_transfers
 
     def getInTransfers(self):
 
@@ -144,5 +184,24 @@ class MoneroRPC:
         data = '{"jsonrpc":"2.0","id":"0","method":"get_transfers","params":{"in":true}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        r_data = response.json().get('result')
 
-        return response.json().get('result').get('in')
+        in_transfers = []
+        for t in r_data.get('in'):
+            transfer = Transfer(
+                t.get('address'),
+                t.get('amount'),
+                t.get('confirmations'),
+                t.get('double_spend_seen'),
+                t.get('fee'),
+                t.get('height'),
+                t.get('note'),
+                t.get('payment_id'),
+                t.get('timestamp'),
+                t.get('txid'),
+                t.get('type')
+            )
+            print(transfer)
+            in_transfers.append(transfer)
+
+        return in_transfers

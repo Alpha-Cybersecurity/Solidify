@@ -2,9 +2,11 @@ from moneroRpcClass import MoneroRPC
 import networkx as nx
 import argparse
 import random
+from parse import parse
 
 def main(host, port, wallet_file, exe):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
+    parse(mrpc)
 
 if __name__ == '__main__':
 
