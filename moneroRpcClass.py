@@ -16,7 +16,7 @@ class MoneroRPC:
         if exe:
             if not wallet_file:
                 raise Exception("No wallet file specified")
-                
+
             command = [exe]
             options = dict(
                 disable_login = '--disable-rpc-login',
@@ -116,7 +116,7 @@ class MoneroRPC:
         'Content-Type': 'application/json',
         }
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{}}' 
+        data = '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{}}'
 
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
@@ -145,15 +145,3 @@ class MoneroRPC:
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
 
         return response.json().get('result').get('in')
-
-
-
-
-
-
-
-#
-# #
-# moneroRPC = MoneroRPC('C:\\Users\\carlos\\Documents\\Monero\\wallets\\carlos-stagenet\\carlos-stagenet')
-#
-# print(moneroRPC.getHeight())
