@@ -1,4 +1,5 @@
 from moneroRpcClass import MoneroRPC
+import networkx as nx
 import argparse
 import random
 from parse import parse
@@ -16,6 +17,8 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--client-port', dest='port', type=int, help='Running RPC client port')
 
     args = parser.parse_args()
+
+
 
 
     if not args.x:
