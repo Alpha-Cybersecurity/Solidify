@@ -1,6 +1,9 @@
-from entities import Address, Balance, Transfer, Destination
+from entities import Wallet, Address, Balance, Transfer, Destination
 
 def parse(mrpc):
+
+    height = mrpc.getHeight().get('height')
+    w = Wallet(height)
 
     print("[*] Addresses")
 
@@ -18,7 +21,6 @@ def parse(mrpc):
         print(balance)
         balances.append(balance)
 
-    height = mrpc.getHeight().get('height')
 
     print("[*] Out Transfers")
 

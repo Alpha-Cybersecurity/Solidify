@@ -1,3 +1,7 @@
+class Wallet():
+
+    def __init__(self, height):
+        self.height = height
 
 class Address():
 
@@ -52,6 +56,7 @@ class Transfer():
             res = "-(%d)-> %s" % (self.amount, self.address)
 
         return res
+
 class Destination():
     def __init__(self, address, amount):
         self.address = address

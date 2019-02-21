@@ -10,7 +10,11 @@
       'label': 'Primary account',
       'used': True
     },
-    {'address': '793yXJbZ95Ni93odWSGcBZJUFTAh8kMAAXGUqBXarneCDC2vYQLV9jXX9Cq4iFCuNvUttJN82Z4ywTDq799eTRoHF8A36xt', 'address_index': 1, 'label': '', 'used': True
+    {
+      'address': '793yXJbZ95Ni93odWSGcBZJUFTAh8kMAAXGUqBXarneCDC2vYQLV9jXX9Cq4iFCuNvUttJN82Z4ywTDq799eTRoHF8A36xt',  
+      'address_index': 1,
+      'label': '',
+      'used': True
     }
   ]
 }
