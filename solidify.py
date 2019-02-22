@@ -1,7 +1,7 @@
 from moneroRpcClass import MoneroRPC
 import argparse
 import random
-from draw import generate_draw
+from draw import generate_draw, insert_neo4j
 
 from entities import Wallet
 
@@ -11,7 +11,8 @@ log = logging.getLogger(__name__)
 def main(host, port, wallet_file, exe, output):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
     w = Wallet(mrpc)
-    generate_draw(w, output)
+    #generate_draw(w, output)
+    insert_neo4j(w, "localhost", "7687","neo4j", "1204")
 
 if __name__ == '__main__':
 
