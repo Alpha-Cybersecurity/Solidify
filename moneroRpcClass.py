@@ -186,7 +186,6 @@ class MoneroRPC:
 
         in_transfers = []
         for t in r_data.get('in'):
-            print(t)
             transfer = Transfer(
                 t.get('address'),
                 t.get('amount'),

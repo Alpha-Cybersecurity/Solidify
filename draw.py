@@ -31,10 +31,12 @@ class Graph():
 
     def addMoneroTransaction(self, tx):
         if tx.type == 'out':
+            self.graph.add_edge(tx.address, tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=tx.amount, color='blue')
             for destination in tx.destinations:
-                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=destination.amount, color='red')
+                self.graph.add_edge(tx.txid, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=destination.amount, color='red')
         else:
-            self.graph.add_edge(-1, tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=tx.amount, color='blue')
+            self.graph.add_edge(tx.txid, tx.address, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=tx.amount, color='blue')
+        self.graph.node[tx.txid]['color'] = 'yellow'
 
 
 
