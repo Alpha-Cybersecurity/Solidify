@@ -34,9 +34,9 @@ class Graph():
 
         if tx.type == 'out':
             for destination in tx.destinations:
-                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=destination.amount, weight=destination.amount, color='red')
+                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=destination.amount, fee=tx.fee, weight=destination.amount, color='red')
         else:
-            self.graph.add_edge("%010d" % random.randint(0, 1e10), tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=tx.amount, weight=tx.amount, color='blue')
+            self.graph.add_edge("%010d" % random.randint(0, 1e10), tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=tx.amount, fee=tx.fee, weight=tx.amount, color='blue')
 
 
 
