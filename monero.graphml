@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key attr.name="weight" attr.type="double" for="edge" id="d14" />
+  <key attr.name="fee" attr.type="double" for="edge" id="d13" />
+  <key attr.name="amount" attr.type="double" for="edge" id="d12" />
+  <key attr.name="label" attr.type="string" for="edge" id="d11" />
+  <key attr.name="timestamp" attr.type="long" for="edge" id="d10" />
+  <key attr.name="height" attr.type="long" for="edge" id="d9" />
+  <key attr.name="txid" attr.type="string" for="edge" id="d8" />
+  <key attr.name="color" attr.type="string" for="edge" id="d7" />
+  <key attr.name="unlocked" attr.type="double" for="node" id="d6" />
+  <key attr.name="balance" attr.type="double" for="node" id="d5" />
+  <key attr.name="used" attr.type="boolean" for="node" id="d4" />
+  <key attr.name="description" attr.type="string" for="node" id="d3" />
+  <key attr.name="color" attr.type="string" for="node" id="d2" />
+  <key attr.name="height_timestamp" attr.type="long" for="node" id="d1" />
+  <key attr.name="height" attr.type="long" for="node" id="d0" />
+  <graph edgedefault="directed">
+    <node id="wallet:5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5">
+      <data key="d0">273943</data>
+      <data key="d1">1414112587</data>
+      <data key="d2">#00eb3b</data>
+    </node>
+    <node id="5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5">
+      <data key="d3">Primary account</data>
+      <data key="d4">True</data>
+      <data key="d2">#d1ffed</data>
+      <data key="d5">11.0</data>
+      <data key="d6">11.0</data>
+    </node>
+    <node id="79oF16cZhBBTgSutEqSnXb7cv4whrCUzmfBquP7hVoNN8Y7wcbQYqbnMoSjPZWrPKNbyzqi1cs1A3XPXQ8eGJkQ48f33kUV">
+      <data key="d3">Carlos</data>
+      <data key="d4">False</data>
+      <data key="d2">#d1ffed</data>
+      <data key="d5">0.0</data>
+      <data key="d6">0.0</data>
+    </node>
+    <node id="6684397982">
+      <data key="d2">#d3d3d3</data>
+    </node>
+    <node id="3200534884">
+      <data key="d2">#d3d3d3</data>
+    </node>
+    <edge source="wallet:5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5" target="5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5">
+      <data key="d7">black</data>
+    </edge>
+    <edge source="wallet:5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5" target="79oF16cZhBBTgSutEqSnXb7cv4whrCUzmfBquP7hVoNN8Y7wcbQYqbnMoSjPZWrPKNbyzqi1cs1A3XPXQ8eGJkQ48f33kUV">
+      <data key="d7">black</data>
+    </edge>
+    <edge source="6684397982" target="5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5">
+      <data key="d8">184c0dd89a42d545a814226e6aa28e8e9a3c001a31336e254fe149843b5d0ca6</data>
+      <data key="d9">273929</data>
+      <data key="d10">1550858951</data>
+      <data key="d11" />
+      <data key="d12">10.0</data>
+      <data key="d13">0.0003864</data>
+      <data key="d14">10.0</data>
+      <data key="d7">#ff2400</data>
+    </edge>
+    <edge source="3200534884" target="5671cvEkqie7s7sQoNhrFcPnZ6S9mQJqvRys7v4DfjuPLWkoRAQQWjEJAs18uGPYRwjF83PM1LaS72Mrj5JqXSx4JnTPzG5">
+      <data key="d8">fa1c2aff91dc89d34e9ac9387116c765f9dd8f83fbcb181814c749a1032048c3</data>
+      <data key="d9">273930</data>
+      <data key="d10">1550859023</data>
+      <data key="d11" />
+      <data key="d12">1.0</data>
+      <data key="d13">0.00050515</data>
+      <data key="d14">1.0</data>
+      <data key="d7">#ff2400</data>
+    </edge>
+  </graph>
+</graphml>

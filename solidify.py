@@ -8,10 +8,10 @@ from entities import Wallet
 import logging
 log = logging.getLogger(__name__)
 
-def main(host, port, wallet_file, exe):
+def main(host, port, wallet_file, exe, output):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
     w = Wallet(mrpc)
-    generate_draw(w)
+    generate_draw(w, output)
 
 if __name__ == '__main__':
 
@@ -20,6 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('-x', '--client-executable', dest='x', help='Path to RPC client')
     parser.add_argument('-a', '--client-host', dest='host', help='Running RPC client host')
     parser.add_argument('-p', '--client-port', dest='port', type=int, help='Running RPC client port')
+    parser.add_argument('-o', '--output', dest='output', help='Output filename')
 
     args = parser.parse_args()
 
@@ -51,5 +52,6 @@ if __name__ == '__main__':
 
     host = args.host if args.host else "127.0.0.1"
     port = args.port if args.port else random.randint(10240, 65000)
+    output = args.output if args.output else "monero.graphml"
 
-    main(host, port, wallet_file, exe)
+    main(host, port, wallet_file, exe, output)
