@@ -10,6 +10,9 @@ class Wallet():
         self.out_transfers = mrpc.getOutTransfers()
         self.in_transfers = mrpc.getInTransfers()
 
+        for address in self.addresses:
+            if address.index == 0:
+                self.main_address = address
         # print(mrpc.getAccountsTags())
         # print(mrpc.getAddressBook())
 
@@ -40,7 +43,7 @@ class Transfer():
         self.height = height
         self.note =  note
         self.payment_id = payment_id
-        self. timestamp =  timestamp
+        self.timestamp =  timestamp
         self.txid = txid
         self.type = type
 
