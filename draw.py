@@ -8,11 +8,11 @@ class Graph():
 
     def addWallet(self, w):
         wallet_name = "wallet:%s" % w.main_address.address
-        self.graph.add_node(wallet_name, height=w.height, height_timestamp=w.creation, color='green')
+        self.graph.add_node(wallet_name, height=w.height, height_timestamp=w.creation, color='#00eb3b')
 
         for a in w.addresses:
             self.addMoneroAddress(a)
-            self.graph.add_path([wallet_name, a.address], color='green')
+            self.graph.add_path([wallet_name, a.address], color='black')
 
         for b in w.balances:
             self.addBalance(b)
@@ -24,7 +24,7 @@ class Graph():
             self.addMoneroTransaction(i_tx)
 
     def addMoneroAddress(self, address):
-        self.graph.add_node(address.address, description=address.label, used=address.used)
+        self.graph.add_node(address.address, description=address.label, used=address.used, color='#d1ffed')
 
     def addBalance(self, balance):
         self.graph.node[balance.address]['balance'] = balance.balance
@@ -34,9 +34,9 @@ class Graph():
 
         if tx.type == 'out':
             for destination in tx.destinations:
-                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=destination.amount, fee=tx.fee, weight=destination.amount, color='red')
+                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=destination.amount, fee=tx.fee, weight=destination.amount, color='#218DB1')
         else:
-            self.graph.add_edge("%010d" % random.randint(0, 1e10), tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=tx.amount, fee=tx.fee, weight=tx.amount, color='blue')
+            self.graph.add_edge("%010d" % random.randint(0, 1e10), tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=tx.amount, fee=tx.fee, weight=tx.amount, color='#ff2400')
 
 
 
