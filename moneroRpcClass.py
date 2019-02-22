@@ -150,8 +150,10 @@ class MoneroRPC:
         response = requests.post(self.json_rpc_address, headers=headers, data=data)
         r_data = response.json().get('result')
 
+
         out_transfers = []
         for t in r_data.get('out'):
+
             transfer = Transfer(
                 t.get('address'),
                 t.get('amount'),
@@ -171,6 +173,9 @@ class MoneroRPC:
 
             out_transfers.append(transfer)
 
+            for t in out_transfers:
+                print(t.destinations)
+
         return out_transfers
 
     def getInTransfers(self):
@@ -186,7 +191,6 @@ class MoneroRPC:
 
         in_transfers = []
         for t in r_data.get('in'):
-            print(t)
             transfer = Transfer(
                 t.get('address'),
                 t.get('amount'),

@@ -1,4 +1,5 @@
 import networkx as nx
+import random
 
 class Graph():
 
@@ -23,18 +24,19 @@ class Graph():
             self.addMoneroTransaction(i_tx)
 
     def addMoneroAddress(self, address):
-        self.graph.add_node(address.address, label=address.label, used=address.used)
+        self.graph.add_node(address.address, description=address.label, used=address.used)
 
     def addBalance(self, balance):
         self.graph.node[balance.address]['balance'] = balance.balance
         self.graph.node[balance.address]['unlocked'] = balance.unlocked
 
     def addMoneroTransaction(self, tx):
+
         if tx.type == 'out':
             for destination in tx.destinations:
-                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=destination.amount, color='red')
+                self.graph.add_edge(tx.address, destination.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=destination.amount, weight=destination.amount, color='red')
         else:
-            self.graph.add_edge(-1, tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, weight=tx.amount, color='blue')
+            self.graph.add_edge("%010d" % random.randint(0, 1e10), tx.address, txid=tx.txid, height=tx.height, timestamp=tx.timestamp, label=tx.note, amount=tx.amount, weight=tx.amount, color='blue')
 
 
 

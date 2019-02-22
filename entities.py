@@ -34,26 +34,25 @@ class Balance():
 
 
 class Transfer():
-    def __init__(self, address, amount, confirmations, double_spend_seen, fee, height, note, payment_id, timestamp, txid, type, destinations=[]):
+    def __init__(self, address, amount, confirmations, double_spend_seen, fee, height, note, payment_id, timestamp, txid, type, destinations=None):
         self.address = address
         self.amount = amount
         self.confirmations =  confirmations
         self.double_spend_seen = double_spend_seen
         self.fee =  fee
         self.height = height
-        self.note =  note
+        self.note =  note if len(note.strip()) > 0 else "-"
         self.payment_id = payment_id
         self.timestamp =  timestamp
         self.txid = txid
         self.type = type
 
         if type=='out':
-            self.destinations = destinations
+            self.destinations = destinations if destinations else []
 
     def add_destination(self, destination):
         if self.type != 'out':
             raise Exception("Destinations only for out transactions")
-
         self.destinations.append(destination)
 
 
