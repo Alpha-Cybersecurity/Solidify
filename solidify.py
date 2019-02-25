@@ -8,11 +8,12 @@ from entities import Wallet
 import logging
 log = logging.getLogger(__name__)
 
-def main(host, port, wallet_file, exe, output):
+def main(host, port, wallet_file, exe, output, neo4j):
     mrpc = MoneroRPC(host, port, wallet_file=wallet_file, exe=exe)
     w = Wallet(mrpc)
-    #generate_draw(w, output)
-    insert_neo4j(w, "localhost", "7687","neo4j", "1204")
+    generate_draw(w, output)
+    if neo4j.get('neoHost'):
+        insert_neo4j(w, neo4j.get('neoHost'), neo4j.get('neoPort'),neo4j.get('neoUser'), neo4j.get('neoPass'))
 
 if __name__ == '__main__':
 
@@ -21,6 +22,10 @@ if __name__ == '__main__':
     parser.add_argument('-x', '--client-executable', dest='x', help='Path to RPC client')
     parser.add_argument('-a', '--client-host', dest='host', help='Running RPC client host')
     parser.add_argument('-p', '--client-port', dest='port', type=int, help='Running RPC client port')
+    parser.add_argument('-nh', '--neoHost', dest='neoHost', help='Neo4j host')
+    parser.add_argument('-np', '--neoPort', dest='neoPort', help='Neo4j Port')
+    parser.add_argument('-nU', '--neoUser', dest='neoUser', help='Neo4j User')
+    parser.add_argument('-nP', '--neoPassword', dest='neoPassword', help='Neo4j Password')
     parser.add_argument('-o', '--output', dest='output', help='Output filename')
 
     args = parser.parse_args()
@@ -55,4 +60,11 @@ if __name__ == '__main__':
     port = args.port if args.port else random.randint(10240, 65000)
     output = args.output if args.output else "monero.graphml"
 
-    main(host, port, wallet_file, exe, output)
+    neo4j = {}
+    if args.neoHost: 
+        neo4j['neoHost'] = args.neoHost
+        neo4j['neoPort'] = args.neoPort
+        neo4j['neoUser'] = args.neoUser
+        neo4j['neoPass'] = args.neoPassword
+
+    main(host, port, wallet_file, exe, output, neo4j)

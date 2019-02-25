@@ -125,7 +125,10 @@ class MoneroRPC:
         r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
         r_data = r.json().get('block_header')
 
-        return r_data.get('timestamp')
+        if r_data.get('timestamp'):     
+            return  time.strftime('%Y-%m-%d', time.localtime(r_data.get('timestamp')))
+        else:
+            return 'Timestamp not found for height ' + height
 
     def getAddressBook(self):
 
