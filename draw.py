@@ -78,14 +78,15 @@ class Neo4j():
     def addMoneroTransaction(self, tx):
         if tx.type == 'out':
             for destination in tx.destinations:
-                self.session.run("MATCH (a:Address {address: $tx_address}) MATCH (d:Address {destination: $destination_address}"
-                ") CREATE UNIQUE (a)-[:TRANSACTION {txid: $tx_id, height: $tx_height,timestamp: $timestamp, note: $note, amount: $amount, fee: $tx_fee}]->(d) ",
+                print("out")
+                self.session.run("MATCH (a:Address {address: $tx_address}) MERGE (d:Address {address: $destination_address}"
+                ") CREATE UNIQUE (a)-[:TRANSACTION {txid: $id ,height: $height, timestamp: $timestamp, note: $note, amount: $amount, fee: $fee}]->(d) ",
                 tx_address=tx.address, destination_address=destination.address, id=tx.txid, height=tx.height, timestamp=tx.timestamp, note=tx.note, amount=tx.amount, fee=tx.fee)
         else:
             self.unknownAddress = "%010d" % random.randint(0, 1e10)
             self.session.run("MATCH (a:Address {address: $tx_address}) MERGE (d:unknownAddress {unknownAddress: $unknownAddress}"
-                ") CREATE UNIQUE (a)-[:TRANSACTION "
-                "{txid: $id, height: $height, timestamp: $timestamp, note: $note, amount: $amount, fee: $fee}]->(d) ",
+                ") CREATE UNIQUE (a)<-[:TRANSACTION "
+                "{txid: $id, height: $height, timestamp: $timestamp, note: $note, amount: $amount, fee: $fee}]-(d) ",
                 tx_address=tx.address, unknownAddress=self.unknownAddress, id=tx.txid, height=tx.height, timestamp=tx.timestamp, note=tx.note, amount=tx.amount, fee=tx.fee)
 
 def generate_draw(w, output):
