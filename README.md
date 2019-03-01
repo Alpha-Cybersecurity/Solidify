@@ -1,7 +1,7 @@
 # Solidify
 Cryptocurrency Forensics
 
-![doc/images/logos/logo2.png](doc/images/logos/logo2.png)
+![doc/images/logos/logo.png](doc/images/logos/logo.png)
 
 We use the word solidify as opposed to the term used to denominate the property that grants anonymity to monero: the fungibility.
 
