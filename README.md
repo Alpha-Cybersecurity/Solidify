@@ -8,9 +8,44 @@ We use the word solidify as opposed to the term used to denominate the property 
 
 ## Install
 
+We encourage to use `virtualenv`:
 
+```
+pip install -r requeriments.txt
+```
 
-## How does it work
+## Launch
+
+```
+usage: solidify.py [-h] [-f WALLET_FILE] [-x X] [-a HOST] [-p PORT]
+                   [-nh NEOHOST] [-np NEOPORT] [-nU NEOUSER] [-nP NEOPASSWORD]
+                   [-o OUTPUT]
+
+Solidify
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f WALLET_FILE, --wallet-file WALLET_FILE
+                        Path to wallet file
+  -x X, --client-executable X
+                        Path to RPC client
+  -a HOST, --client-host HOST
+                        Running RPC client host
+  -p PORT, --client-port PORT
+                        Running RPC client port
+  -nh NEOHOST, --neoHost NEOHOST
+                        Neo4j host
+  -np NEOPORT, --neoPort NEOPORT
+                        Neo4j Port
+  -nU NEOUSER, --neoUser NEOUSER
+                        Neo4j User
+  -nP NEOPASSWORD, --neoPassword NEOPASSWORD
+                        Neo4j Password
+  -o OUTPUT, --output OUTPUT
+                        Output filename
+```
+
+### How does it work
 
 1. Use monero-rpc to load the wallet
 
