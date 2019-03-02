@@ -1,5 +1,6 @@
 # Solidify
 Cryptocurrency Forensics
+[![Updates](https://pyup.io/repos/github/Alpha-Cybersecurity/Solidify/shield.svg)](https://pyup.io/repos/github/Alpha-Cybersecurity/Solidify/)
 
 ![doc/images/logos/logo.png](doc/images/logos/logo.png)
 
