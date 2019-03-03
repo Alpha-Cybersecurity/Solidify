@@ -10,7 +10,7 @@ class Requester():
     def __init__(self, proxy_host, proxy_port):
         self.json_rpc_address = "http://%s:%d/json_rpc" % (proxy_host, proxy_port)
 
-    def request_data_gen(self, method, params=None):
+    def gen_request_data(self, method, params=None):
 
         res = dict(
             jsonrpc="2.0",
@@ -25,12 +25,18 @@ class Requester():
 
     def gen_request(self, method, params=None):
 
-        data = self.request_data_gen(method, params)
+        data = self.gen_request_data(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
+        if response.status_code != 200:
+            raise Exception("[%d] Error sending %s (%s)" % (response.status_code, method, params))
+
         # TODO Evaluate response status_code
-        r_data = response.json().get('result')
+        r_data = response.json().get('result', None)
+
+        if not r_data:
+            raise Exception("None response in %s (%s)" % (method, params))
 
         return r_data
 
