@@ -1,39 +1,124 @@
 import requests
-import random
 import subprocess
 import time
 import signal
-from entities import Wallet, Address, Balance, Transfer, Destination
+from entities import Address, Balance, Transfer, Destination
 
 
-def request_data_gen(method, params):
+class Requester():
 
-    res = dict(
-        jsonrpc="2.0",
-        id= 0,
-        method=method,
-        params=params
-    )
+    def __init__(self, proxy_host, proxy_port):
+        self.json_rpc_address = "http://%s:%d/json_rpc" % (proxy_host, proxy_port)
 
-    if params:
-        res['params'] = params
+    def request_data_gen(self, method, params=None):
 
-    return res
+        res = dict(
+            jsonrpc="2.0",
+            id=0,
+            method=method
+        )
+
+        if params:
+            res['params'] = params
+
+        return res
+
+    def gen_request(self, method, params=None):
+
+        data = self.request_data_gen(method, params)
+
+        response = requests.post(self.json_rpc_address, json=data)
+
+        # TODO Evaluate response status_code
+        r_data = response.json().get('result')
+
+        return r_data
+
+    def get_addresses(self):
+        method = "get_balance"
+
+        params = dict(
+            account_index=0
+        )
+
+        response = self.gen_request(method, params=params)
+
+        return response
+
+    def get_balances(self):
+        method = "get_balance"
+
+        params = dict(
+            account_index=0,
+            address_indices=[0, 1]
+        )
+
+        response = self.gen_request(method, params=params)
+
+        return response
+
+    def get_accounts_tags(self):
+        method = "get_accounts"
+
+        response = self.gen_request(method)
+
+        return response
+
+    def get_height(self):
+        method = "get_height"
+
+        response = self.gen_request(method)
+
+        return response
+
+    def get_address_book(self):
+        method = "get_address_book"
+
+        params = dict()
+
+        response = self.gen_request(method, params=params)
+
+        return response
+
+    def get_in_transfers(self):
+        method = "get_transfers"
+
+        # Es necesario hacerlo así porque 'in' es palabra reservada en python
+        params = dict()
+        params['in'] = True
+
+        response = self.gen_request(method, params=params)
+
+        return response
+
+    def get_out_transfers(self):
+        method = "get_transfers"
+
+        params = dict(
+            out=True
+        )
+
+        response = self.gen_request(method, params=params)
+
+        return response
 
 
 class MoneroRPC:
     def __init__(self, host, port, wallet_file=None, exe=None):
 
         self._proxy_host = host
-        self._proxy_port = port # Puerto aleatorio para poder lanzar varios?
+        self._proxy_port = port  # Puerto aleatorio para poder lanzar varios?
+
+        self._requester = Requester(host, port)
 
         if exe:
             '''
-            monero-wallet-rpc.exe --stagenet --password ""
-                                  --rpc-bind-port 28088
-                                  --disable-rpc-login
-                                  --daemon-host monero-stagenet.exan.tech:38081
-                                  --wallet-file C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet\carlos-stagenet#init method and start monero-wallet-rpc
+            monero-wallet-rpc.exe
+                --stagenet --password ""
+                --rpc-bind-port 28088
+                --disable-rpc-login
+                --daemon-host monero-stagenet.exan.tech:38081
+                --wallet-file C:\\Users\\carlos\\Documents\\Monero\\wallets\\carlos-stagenet\\carlos-stagenet#init method and start monero-wallet-rpc
             '''
             if not wallet_file:
                 raise Exception("No wallet file specified")
@@ -67,26 +152,9 @@ class MoneroRPC:
         print('Signal handler called with signal %s' % signum)
         self._p.terminate()
 
-    @property
-    def proxy_address(self):
-        addr = "http://%s:%d" % (self._proxy_host, self._proxy_port)
-        return addr
-
-    @property
-    def json_rpc_address(self):
-        return "%s/json_rpc" % self.proxy_address
-
     def getAddresses(self):
 
-        method = "get_balance"
-        params = dict(
-            account_index=0
-        )
-        data = request_data_gen(method, params)
-
-        response = requests.post(self.json_rpc_address, json=data)
-
-        r_data = response.json().get('result')
+        r_data = self._requester.get_addresses()
 
         addresses = []
         if r_data:
@@ -98,16 +166,7 @@ class MoneroRPC:
 
     def getBalances(self):
 
-        method = "get_balance"
-        params = dict(
-            account_index=0,
-            address_indices=[0, 1]
-        )
-        data = request_data_gen(method, params)
-
-        response = requests.post(self.json_rpc_address, json=data)
-
-        r_data = response.json().get('result')
+        r_data = self._requester.get_balances()
 
         balances = []
         for b in r_data['per_subaddress']:
@@ -117,69 +176,32 @@ class MoneroRPC:
         return balances
 
     def getAccountsTags(self):
-
-        method = "get_accounts"
-        params = None
-        data = request_data_gen(method, params)
-
-        response = requests.post(self.json_rpc_address, json=data)
-
-        # TODO Parse result
-        return response.json().get('result')
+        return self._requester.get_accounts_tags()
 
     def getHeight(self):
 
-        method = "get_height"
-        params = None
-        data = request_data_gen(method, params)
+        r_data = self._requester.get_height()
+        height = r_data.get('height')
 
-        response = requests.post(self.json_rpc_address, json=data)
-
-        r_data = response.json().get('result')
-
-        return r_data.get('height')
-
-    def heightToDate(self, height):
-
-        moneroblocks_domain = "moneroblocks.info"
-        block_header_path = "/api/get_block_header/%d" % height
-        url = "https://%s%s" % (moneroblocks_domain, block_header_path)
-        r = requests.get(url)
-        r_data = r.json().get('block_header')
-
-        timestamp = r_data.get('timestamp')
-
-        if timestamp:
-            localtime = time.localtime(timestamp)
-            return time.strftime('%Y-%m-%d', localtime)
-        else:
-            raise Exception('Timestamp not found for height ' + height)
+        return height
 
     def getAddressBook(self):
 
-        method = "get_address_book"
-        params = dict()
-        data = request_data_gen(method, params)
+        r_data = self._requester.get_address_book()
+        address_book = r_data.get('entries')
 
-        response = requests.post(self.json_rpc_address, json=data)
+        return address_book
 
-        # TODO Parse result
-        return response.json().get('result').get('entries')
-
+    # TODO Somehow join out and in transfers
     def getOutTransfers(self):
 
-        method = "get_transfers"
-        params = dict(
-            out=True
-        )
-        data = request_data_gen(method, params)
+        r_data = self._requester.get_out_transfers()
 
-        response = requests.post(self.json_rpc_address, json=data)
+        transfers = r_data.get('out')
 
-        r_data = response.json().get('result')
         out_transfers = []
         if r_data:
-            for t in r_data.get('out'):
+            for t in transfers:
 
                 transfer = Transfer(
                     t.get('address'),
@@ -200,25 +222,17 @@ class MoneroRPC:
 
                 out_transfers.append(transfer)
 
-                for t in out_transfers:
-                    print(t.destinations)
-
         return out_transfers
 
     def getInTransfers(self):
 
-        method = "get_transfers"
-        params = dict(
-            in=True
-        )
-        data = request_data_gen(method, params)
+        r_data = self._requester.get_in_transfers()
 
-        response = requests.post(self.json_rpc_address, json=data)
-        r_data = response.json().get('result')
+        transfers = r_data.get('in')
 
         in_transfers = []
         if r_data:
-            for t in r_data.get('in'):
+            for t in transfers:
                 transfer = Transfer(
                     t.get('address'),
                     t.get('amount'),
@@ -236,3 +250,19 @@ class MoneroRPC:
                 in_transfers.append(transfer)
 
         return in_transfers
+
+    def heightToDate(self, height):
+
+        moneroblocks_domain = "moneroblocks.info"
+        block_header_path = "/api/get_block_header/%d" % height
+        url = "https://%s%s" % (moneroblocks_domain, block_header_path)
+        r = requests.get(url)
+        r_data = r.json().get('block_header')
+
+        timestamp = r_data.get('timestamp')
+
+        if timestamp:
+            localtime = time.localtime(timestamp)
+            return time.strftime('%Y-%m-%d', localtime)
+        else:
+            raise Exception('Timestamp not found for height ' + height)
