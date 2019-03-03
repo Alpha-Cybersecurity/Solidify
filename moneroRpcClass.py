@@ -6,7 +6,7 @@ import signal
 from entities import Wallet, Address, Balance, Transfer, Destination
 
 
-def data_gen(method, params):
+def request_data_gen(method, params):
 
     res = dict(
         jsonrpc="2.0",
@@ -20,16 +20,21 @@ def data_gen(method, params):
 
     return res
 
+
 class MoneroRPC:
-
-    #monero-wallet-rpc.exe --stagenet --password "" --rpc-bind-port 28088 --disable-rpc-login  --daemon-host monero-stagenet.exan.tech:38081  --wallet-file C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet\carlos-stagenet#init method and start monero-wallet-rpc
-
     def __init__(self, host, port, wallet_file=None, exe=None):
 
         self._proxy_host = host
-        self._proxy_port = port # Puerto aleatorio para poder lanzar varios
+        self._proxy_port = port # Puerto aleatorio para poder lanzar varios?
 
         if exe:
+            '''
+            monero-wallet-rpc.exe --stagenet --password ""
+                                  --rpc-bind-port 28088
+                                  --disable-rpc-login
+                                  --daemon-host monero-stagenet.exan.tech:38081
+                                  --wallet-file C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet\carlos-stagenet#init method and start monero-wallet-rpc
+            '''
             if not wallet_file:
                 raise Exception("No wallet file specified")
 
@@ -50,7 +55,6 @@ class MoneroRPC:
             self.start_close_handler()
 
             time.sleep(5)
-
 
     def start_close_handler(self):
         signal.signal(signal.SIGINT, self.end)
@@ -78,7 +82,7 @@ class MoneroRPC:
         params = dict(
             account_index=0
         )
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
@@ -97,9 +101,9 @@ class MoneroRPC:
         method = "get_balance"
         params = dict(
             account_index=0,
-            address_indices=[0,1]
+            address_indices=[0, 1]
         )
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
@@ -116,7 +120,7 @@ class MoneroRPC:
 
         method = "get_accounts"
         params = None
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
@@ -127,7 +131,7 @@ class MoneroRPC:
 
         method = "get_height"
         params = None
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
@@ -137,19 +141,25 @@ class MoneroRPC:
 
     def heightToDate(self, height):
 
-        r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
+        moneroblocks_domain = "moneroblocks.info"
+        block_header_path = "/api/get_block_header/%d" % height
+        url = "https://%s%s" % (moneroblocks_domain, block_header_path)
+        r = requests.get(url)
         r_data = r.json().get('block_header')
 
-        if r_data.get('timestamp'):
-            return  time.strftime('%Y-%m-%d', time.localtime(r_data.get('timestamp')))
+        timestamp = r_data.get('timestamp')
+
+        if timestamp:
+            localtime = time.localtime(timestamp)
+            return time.strftime('%Y-%m-%d', localtime)
         else:
-            return 'Timestamp not found for height ' + height
+            raise Exception('Timestamp not found for height ' + height)
 
     def getAddressBook(self):
 
         method = "get_address_book"
         params = dict()
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
@@ -162,7 +172,7 @@ class MoneroRPC:
         params = dict(
             out=True
         )
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
 
@@ -201,7 +211,7 @@ class MoneroRPC:
         params = dict(
             in=True
         )
-        data = data_gen(method, params)
+        data = request_data_gen(method, params)
 
         response = requests.post(self.json_rpc_address, json=data)
         r_data = response.json().get('result')
