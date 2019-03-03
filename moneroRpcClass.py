@@ -5,6 +5,21 @@ import time
 import signal
 from entities import Wallet, Address, Balance, Transfer, Destination
 
+
+def data_gen(method, params):
+
+    res = dict(
+        jsonrpc="2.0",
+        id= 0,
+        method=method,
+        params=params
+    )
+
+    if params:
+        res['params'] = params
+
+    return res
+
 class MoneroRPC:
 
     #monero-wallet-rpc.exe --stagenet --password "" --rpc-bind-port 28088 --disable-rpc-login  --daemon-host monero-stagenet.exan.tech:38081  --wallet-file C:\Users\carlos\Documents\Monero\wallets\carlos-stagenet\carlos-stagenet#init method and start monero-wallet-rpc
@@ -59,13 +74,14 @@ class MoneroRPC:
 
     def getAddresses(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_balance"
+        params = dict(
+            account_index=0
+        )
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_address","params":{"account_index":0}}'
+        response = requests.post(self.json_rpc_address, json=data)
 
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
         r_data = response.json().get('result')
 
         addresses = []
@@ -78,13 +94,15 @@ class MoneroRPC:
 
     def getBalances(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_balance"
+        params = dict(
+            account_index=0,
+            address_indices=[0,1]
+        )
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_balance","params":{"account_index":0,"address_indices":[0,1]}}'
+        response = requests.post(self.json_rpc_address, json=data)
 
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
         r_data = response.json().get('result')
 
         balances = []
@@ -96,26 +114,23 @@ class MoneroRPC:
 
     def getAccountsTags(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_accounts"
+        params = None
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_accounts"}'
-
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        response = requests.post(self.json_rpc_address, json=data)
 
         # TODO Parse result
         return response.json().get('result')
 
     def getHeight(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_height"
+        params = None
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_height"}'
+        response = requests.post(self.json_rpc_address, json=data)
 
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
         r_data = response.json().get('result')
 
         return r_data.get('height')
@@ -125,33 +140,32 @@ class MoneroRPC:
         r = requests.get('https://moneroblocks.info/api/get_block_header/' + str(height))
         r_data = r.json().get('block_header')
 
-        if r_data.get('timestamp'):     
+        if r_data.get('timestamp'):
             return  time.strftime('%Y-%m-%d', time.localtime(r_data.get('timestamp')))
         else:
             return 'Timestamp not found for height ' + height
 
     def getAddressBook(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_address_book"
+        params = dict()
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_address_book","params":{}}'
-
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        response = requests.post(self.json_rpc_address, json=data)
 
         # TODO Parse result
         return response.json().get('result').get('entries')
 
     def getOutTransfers(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_transfers"
+        params = dict(
+            out=True
+        )
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_transfers","params":{"out":true}}'
+        response = requests.post(self.json_rpc_address, json=data)
 
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
         r_data = response.json().get('result')
         out_transfers = []
         if r_data:
@@ -183,13 +197,13 @@ class MoneroRPC:
 
     def getInTransfers(self):
 
-        headers = {
-            'Content-Type': 'application/json',
-        }
+        method = "get_transfers"
+        params = dict(
+            in=True
+        )
+        data = data_gen(method, params)
 
-        data = '{"jsonrpc":"2.0","id":"0","method":"get_transfers","params":{"in":true}}'
-
-        response = requests.post(self.json_rpc_address, headers=headers, data=data)
+        response = requests.post(self.json_rpc_address, json=data)
         r_data = response.json().get('result')
 
         in_transfers = []
@@ -212,4 +226,3 @@ class MoneroRPC:
                 in_transfers.append(transfer)
 
         return in_transfers
-
