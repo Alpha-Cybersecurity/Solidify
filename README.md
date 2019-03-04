@@ -1,6 +1,8 @@
 # Solidify
 
 [![Updates](https://pyup.io/repos/github/Alpha-Cybersecurity/Solidify/shield.svg)](https://pyup.io/repos/github/Alpha-Cybersecurity/Solidify/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/Alpha-Cybersecurity/Solidify.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Alpha-Cybersecurity/Solidify/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Alpha-Cybersecurity/Solidify.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Alpha-Cybersecurity/Solidify/context:python)
 
 
 Cryptocurrency Forensics
