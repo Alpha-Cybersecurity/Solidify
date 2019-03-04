@@ -56,7 +56,7 @@ class Requester():
 
         params = dict(
             account_index=0,
-            address_indices=[0, 1]
+            address_indices=[0, 1] # TODO Add other indices
         )
 
         response = self.gen_request(method, params=params)
@@ -163,10 +163,9 @@ class MoneroRPC:
         r_data = self._requester.get_addresses()
 
         addresses = []
-        if r_data:
-            for a in r_data['addresses']:
-                address = Address(a.get('address'), a.get('address_index'), a.get('label'), a.get('used'))
-                addresses.append(address)
+        for a in r_data['addresses']:
+            address = Address(a.get('address'), a.get('address_index'), a.get('label'), a.get('used'))
+            addresses.append(address)
 
         return addresses
 
@@ -206,27 +205,26 @@ class MoneroRPC:
         transfers = r_data.get('out')
 
         out_transfers = []
-        if r_data:
-            for t in transfers:
+        for t in transfers:
 
-                transfer = Transfer(
-                    t.get('address'),
-                    t.get('amount'),
-                    t.get('confirmations'),
-                    t.get('double_spend_seen'),
-                    t.get('fee'),
-                    t.get('height'),
-                    t.get('note'),
-                    t.get('payment_id'),
-                    t.get('timestamp'),
-                    t.get('txid'),
-                    t.get('type')
-                )
-                for d in t.get('destinations'):
-                    destination = Destination(d.get('address'), d.get('amount'))
-                    transfer.add_destination(destination)
+            transfer = Transfer(
+                t.get('address'),
+                t.get('amount'),
+                t.get('confirmations'),
+                t.get('double_spend_seen'),
+                t.get('fee'),
+                t.get('height'),
+                t.get('note'),
+                t.get('payment_id'),
+                t.get('timestamp'),
+                t.get('txid'),
+                t.get('type')
+            )
+            for d in t.get('destinations'):
+                destination = Destination(d.get('address'), d.get('amount'))
+                transfer.add_destination(destination)
 
-                out_transfers.append(transfer)
+            out_transfers.append(transfer)
 
         return out_transfers
 
@@ -237,23 +235,23 @@ class MoneroRPC:
         transfers = r_data.get('in')
 
         in_transfers = []
-        if r_data:
-            for t in transfers:
-                transfer = Transfer(
-                    t.get('address'),
-                    t.get('amount'),
-                    t.get('confirmations'),
-                    t.get('double_spend_seen'),
-                    t.get('fee'),
-                    t.get('height'),
-                    t.get('note'),
-                    t.get('payment_id'),
-                    t.get('timestamp'),
-                    t.get('txid'),
-                    t.get('type')
-                )
 
-                in_transfers.append(transfer)
+        for t in transfers:
+            transfer = Transfer(
+                t.get('address'),
+                t.get('amount'),
+                t.get('confirmations'),
+                t.get('double_spend_seen'),
+                t.get('fee'),
+                t.get('height'),
+                t.get('note'),
+                t.get('payment_id'),
+                t.get('timestamp'),
+                t.get('txid'),
+                t.get('type')
+            )
+
+            in_transfers.append(transfer)
 
         return in_transfers
 
