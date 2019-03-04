@@ -160,9 +160,14 @@ class MoneroRPC:
 
     def getAddresses(self):
 
-        r_data = self._requester.get_addresses()
-
         addresses = []
+
+        try:
+            r_data = self._requester.get_addresses()
+        except:
+            print("No se han encontrado direcciones")
+            return addresses
+
         for a in r_data['addresses']:
             address = Address(a.get('address'), a.get('address_index'), a.get('label'), a.get('used'))
             addresses.append(address)
@@ -171,9 +176,15 @@ class MoneroRPC:
 
     def getBalances(self):
 
-        r_data = self._requester.get_balances()
 
         balances = []
+
+        try:
+            r_data = self._requester.get_balances()
+        except:
+            print("No se han encontrado balances")
+            return balances
+
         for b in r_data['per_subaddress']:
             balance = Balance(b.get('address'), b.get('balance'), b.get('unlocked_balance'), b.get('num_unspent_outputs'))
             balances.append(balance)
@@ -186,7 +197,7 @@ class MoneroRPC:
     def getHeight(self):
 
         r_data = self._requester.get_height()
-        height = r_data.get('height')
+        height = r_data.get('height', -1)
 
         return height
 
@@ -200,11 +211,17 @@ class MoneroRPC:
     # TODO Somehow join out and in transfers
     def getOutTransfers(self):
 
-        r_data = self._requester.get_out_transfers()
+
+        out_transfers = []
+
+        try:
+            r_data = self._requester.get_out_transfers()
+        except:
+            print("No se han encontrado transferencias salientes")
+            return addresses
 
         transfers = r_data.get('out')
 
-        out_transfers = []
         for t in transfers:
 
             transfer = Transfer(
@@ -229,12 +246,16 @@ class MoneroRPC:
         return out_transfers
 
     def getInTransfers(self):
+        
+        in_transfers = []
 
-        r_data = self._requester.get_in_transfers()
+        try:
+            r_data = self._requester.get_out_transfers()
+        except:
+            print("No se han encontrado transferencias salientes")
+            return addresses
 
         transfers = r_data.get('in')
-
-        in_transfers = []
 
         for t in transfers:
             transfer = Transfer(
