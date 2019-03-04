@@ -41,7 +41,7 @@ class Requester():
         return r_data
 
     def get_addresses(self):
-        method = "get_balance"
+        method = "get_address"
 
         params = dict(
             account_index=0
