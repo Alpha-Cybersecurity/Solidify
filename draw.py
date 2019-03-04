@@ -78,7 +78,6 @@ class Neo4j():
     def addMoneroTransaction(self, tx):
         if tx.type == 'out':
             for destination in tx.destinations:
-                print("out")
                 self.session.run("MATCH (a:Address {address: $tx_address}) MERGE (d:Address {address: $destination_address}"
                 ") CREATE UNIQUE (a)-[:TRANSACTION {txid: $id ,height: $height, timestamp: $timestamp, note: $note, amount: $amount, fee: $fee}]->(d) ",
                 tx_address=tx.address, destination_address=destination.address, id=tx.txid, height=tx.height, timestamp=tx.timestamp, note=tx.note, amount=tx.amount, fee=tx.fee)
