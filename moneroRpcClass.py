@@ -164,7 +164,7 @@ class MoneroRPC:
 
         try:
             r_data = self._requester.get_addresses()
-        except:
+        except Exception as e:
             print("No se han encontrado direcciones")
             return addresses
 
@@ -181,7 +181,7 @@ class MoneroRPC:
 
         try:
             r_data = self._requester.get_balances()
-        except:
+        except Exception as e:
             print("No se han encontrado balances")
             return balances
 
@@ -216,7 +216,7 @@ class MoneroRPC:
 
         try:
             r_data = self._requester.get_out_transfers()
-        except:
+        except Exception as e:
             print("No se han encontrado transferencias salientes")
             return addresses
 
@@ -246,12 +246,12 @@ class MoneroRPC:
         return out_transfers
 
     def getInTransfers(self):
-        
+
         in_transfers = []
 
         try:
             r_data = self._requester.get_out_transfers()
-        except:
+        except Exception as e:
             print("No se han encontrado transferencias salientes")
             return addresses
 
