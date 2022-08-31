@@ -2,7 +2,7 @@ certifi==2019.3.9
 chardet==3.0.4
 decorator==4.4.0
 idna==2.8
-neo4j==1.7.1
+neo4j==4.4.6
 neobolt==1.7.17
 neotime==1.7.4
 networkx==2.4
